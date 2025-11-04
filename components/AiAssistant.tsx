@@ -141,9 +141,9 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ userProfile }) => {
         {messages.map((msg) => (
           <div key={msg.id} className={`flex items-end gap-3 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
             {msg.sender === 'ai' && (
-              <div className="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center text-white font-bold flex-shrink-0">A</div>
+              <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold flex-shrink-0">A</div>
             )}
-            <div className={`max-w-md md:max-w-lg p-4 rounded-2xl shadow-sm text-sm ${msg.sender === 'user' ? 'bg-teal-600 text-white rounded-br-none' : 'bg-gray-200 text-gray-800 rounded-bl-none'}`}>
+            <div className={`max-w-md md:max-w-lg p-4 rounded-2xl shadow-sm text-sm ${msg.sender === 'user' ? 'bg-blue-600 text-white rounded-br-none' : 'bg-gray-200 text-gray-800 rounded-bl-none'}`}>
               {msg.sender === 'ai' ? (
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
@@ -173,7 +173,7 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ userProfile }) => {
         ))}
          {isLoading && (
             <div className="flex items-end gap-3 justify-start">
-               <div className="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center text-white font-bold flex-shrink-0">A</div>
+               <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold flex-shrink-0">A</div>
                <div className="max-w-md md:max-w-lg p-4 rounded-2xl shadow-sm bg-gray-200 text-gray-800 rounded-bl-none">
                   <div className="flex items-center space-x-2 text-sm text-gray-600">
                      <span>Aura is typing</span>
@@ -211,7 +211,7 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ userProfile }) => {
           <button
             onClick={handleSend}
             disabled={isLoading || input.trim() === ''}
-            className="bg-teal-600 text-white p-2.5 rounded-full hover:bg-teal-700 disabled:bg-teal-300 disabled:cursor-not-allowed transition-colors ml-1"
+            className="bg-blue-600 text-white p-2.5 rounded-full hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition-colors ml-1"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />

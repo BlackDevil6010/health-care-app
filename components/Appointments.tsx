@@ -12,7 +12,7 @@ const AppointmentCard: React.FC<{ appointment: Appointment }> = ({ appointment }
                     <p className="text-sm text-gray-500">{appointment.doctor.specialty}</p>
                 </div>
                 <div className="text-right ml-4 flex-shrink-0">
-                    <p className="font-semibold text-teal-600">{new Date(appointment.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+                    <p className="font-semibold text-blue-600">{new Date(appointment.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
                     <p className="text-gray-600">{appointment.time}</p>
                 </div>
             </div>
@@ -96,7 +96,7 @@ const Appointments: React.FC = () => {
         <h1 className="text-3xl font-bold text-gray-800">Appointments</h1>
         <button 
           onClick={handleToggleForm}
-          className="bg-teal-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-teal-700 transition-colors"
+          className="bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors"
         >
           {showBookingForm ? 'Cancel' : 'Book New'}
         </button>
@@ -112,7 +112,7 @@ const Appointments: React.FC = () => {
                         id="doctor" 
                         value={selectedDoctorId}
                         onChange={e => setSelectedDoctorId(e.target.value)}
-                        className={`mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm rounded-md ${errors.doctor ? 'border-red-500' : ''}`}
+                        className={`mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md ${errors.doctor ? 'border-red-500' : ''}`}
                     >
                         <option value="" disabled>Select a specialist</option>
                         {doctors.map(doc => <option key={doc.id} value={doc.id}>{doc.name} - {doc.specialty}</option>)}
@@ -126,7 +126,7 @@ const Appointments: React.FC = () => {
                         id="date" 
                         value={selectedDate}
                         onChange={e => setSelectedDate(e.target.value)}
-                        className={`mt-1 block w-full pl-3 pr-2 py-2 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm rounded-md ${errors.date ? 'border-red-500' : ''}`} 
+                        className={`mt-1 block w-full pl-3 pr-2 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md ${errors.date ? 'border-red-500' : ''}`} 
                     />
                     {errors.date && <p className="text-red-600 text-xs mt-1">{errors.date}</p>}
                 </div>
@@ -137,7 +137,7 @@ const Appointments: React.FC = () => {
                         id="time" 
                         value={selectedTime}
                         onChange={e => setSelectedTime(e.target.value)}
-                        className={`mt-1 block w-full pl-3 pr-2 py-2 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm rounded-md ${errors.time ? 'border-red-500' : ''}`}
+                        className={`mt-1 block w-full pl-3 pr-2 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md ${errors.time ? 'border-red-500' : ''}`}
                     />
                     {errors.time && <p className="text-red-600 text-xs mt-1">{errors.time}</p>}
                 </div>
@@ -148,7 +148,7 @@ const Appointments: React.FC = () => {
                         rows={3}
                         value={reasonForVisit}
                         onChange={e => setReasonForVisit(e.target.value)}
-                        className="mt-1 block w-full text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm rounded-md shadow-sm"
+                        className="mt-1 block w-full text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm"
                         placeholder="Briefly describe the reason for your appointment..."
                     ></textarea>
                 </div>

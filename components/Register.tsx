@@ -28,11 +28,11 @@ const Register: React.FC<RegisterProps> = ({ onRegister, onSwitchToLogin }) => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl flex flex-col md:flex-row-reverse bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <div className="w-full max-w-4xl flex flex-col md:flex-row-reverse bg-white rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up">
         {/* Left Side - Form */}
         <div className="w-full md:w-1/2 p-8 sm:p-12 flex flex-col justify-center">
           <div className="mb-8 text-center">
-            <h1 className="text-3xl font-bold text-gray-800 pt-12 md:pt-0">Create Your Account</h1>
+            <h1 className="text-3xl font-bold text-gray-800">Create Your Account</h1>
             <p className="text-gray-500 mt-2">Get started with your personalized health journey.</p>
           </div>
 
@@ -49,7 +49,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister, onSwitchToLogin }) => {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition-shadow"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-shadow"
                 placeholder="Full Name"
               />
             </div>
@@ -66,7 +66,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister, onSwitchToLogin }) => {
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition-shadow"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-shadow"
                 placeholder="Username"
               />
             </div>
@@ -83,7 +83,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister, onSwitchToLogin }) => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition-shadow"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-shadow"
                 placeholder="Email address"
               />
             </div>
@@ -100,7 +100,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister, onSwitchToLogin }) => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition-shadow"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-shadow"
                 placeholder="Password"
               />
             </div>
@@ -109,7 +109,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister, onSwitchToLogin }) => {
 
             <button
               type="submit"
-              className="w-full py-3 px-4 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75 transition-transform transform hover:scale-105"
+              className="w-full py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-lg shadow-md hover:from-cyan-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition-transform transform hover:scale-105"
             >
               Create Account
             </button>
@@ -117,14 +117,14 @@ const Register: React.FC<RegisterProps> = ({ onRegister, onSwitchToLogin }) => {
 
           <p className="mt-8 text-center text-sm text-gray-600">
             Already have an account?{' '}
-            <button onClick={onSwitchToLogin} className="font-medium text-teal-600 hover:underline">
+            <button onClick={onSwitchToLogin} className="font-medium text-blue-600 hover:underline">
               Sign in
             </button>
           </p>
         </div>
 
         {/* Right Side - Illustration */}
-        <div className="hidden md:flex w-1/2 bg-teal-500 items-center justify-center p-8">
+        <div className="hidden md:flex w-1/2 bg-gradient-to-br from-cyan-500 to-blue-600 items-center justify-center p-8">
             <HealthcareIllustration className="w-full h-auto max-w-sm" />
         </div>
       </div>

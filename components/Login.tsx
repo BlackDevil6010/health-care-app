@@ -28,11 +28,11 @@ const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl flex flex-col md:flex-row bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <div className="w-full max-w-4xl flex flex-col md:flex-row bg-white rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up">
         {/* Left Side - Form */}
         <div className="w-full md:w-1/2 p-8 sm:p-12 flex flex-col justify-center">
           <div className="mb-8 text-center">
-            <h1 className="text-3xl font-bold text-gray-800 pt-12 md:pt-0">Welcome Back</h1>
+            <h1 className="text-3xl font-bold text-gray-800">Welcome Back</h1>
             <p className="text-gray-500 mt-2">Sign in to continue to your health dashboard.</p>
           </div>
 
@@ -49,7 +49,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition-shadow"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-shadow"
                 placeholder="Email address"
               />
             </div>
@@ -66,7 +66,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition-shadow"
+                className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-shadow"
                 placeholder="Password"
               />
               <button
@@ -81,14 +81,14 @@ const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => {
             {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
             <div className="flex items-center justify-between">
-                <a href="#" className="text-sm font-medium text-teal-600 hover:underline">
+                <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
                     Forgot password?
                 </a>
             </div>
 
             <button
               type="submit"
-              className="w-full py-3 px-4 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75 transition-transform transform hover:scale-105"
+              className="w-full py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-lg shadow-md hover:from-cyan-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition-transform transform hover:scale-105"
             >
               Sign In
             </button>
@@ -96,14 +96,14 @@ const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => {
 
           <p className="mt-8 text-center text-sm text-gray-600">
             Don't have an account?{' '}
-            <button onClick={onSwitchToRegister} className="font-medium text-teal-600 hover:underline">
+            <button onClick={onSwitchToRegister} className="font-medium text-blue-600 hover:underline">
               Sign up
             </button>
           </p>
         </div>
 
         {/* Right Side - Illustration */}
-        <div className="hidden md:flex w-1/2 bg-teal-500 items-center justify-center p-8">
+        <div className="hidden md:flex w-1/2 bg-gradient-to-br from-cyan-500 to-blue-600 items-center justify-center p-8">
           <HealthcareIllustration className="w-full h-auto max-w-sm" />
         </div>
       </div>

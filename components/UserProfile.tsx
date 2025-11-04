@@ -63,7 +63,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userProfile, onProfileUpdate 
               </div>
               <button 
                 onClick={() => setIsEditing(true)} 
-                className="bg-teal-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-teal-700 transition-colors"
+                className="bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors"
               >
                 Edit Profile
               </button>
@@ -76,7 +76,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userProfile, onProfileUpdate 
                   <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                     <UserIcon className="h-5 w-5 text-gray-400" />
                   </span>
-                  <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500" />
+                  <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
                 </div>
               </div>
                <div className="relative">
@@ -85,7 +85,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userProfile, onProfileUpdate 
                   <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                     <UserIcon className="h-5 w-5 text-gray-400" />
                   </span>
-                  <input type="text" id="username" name="username" value={formData.username} onChange={handleInputChange} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500" />
+                  <input type="text" id="username" name="username" value={formData.username} onChange={handleInputChange} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
                 </div>
               </div>
               <div className="relative">
@@ -94,7 +94,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userProfile, onProfileUpdate 
                     <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                       <EnvelopeIcon className="h-5 w-5 text-gray-400" />
                     </span>
-                    <input type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500" />
+                    <input type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
                  </div>
               </div>
               <div className="flex items-center space-x-4">

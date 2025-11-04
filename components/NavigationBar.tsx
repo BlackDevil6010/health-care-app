@@ -51,7 +51,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ activeView, setActiveView
                 onClick={() => setActiveView(item.view as View)}
                 className={`flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
                   activeView === item.view
-                    ? 'bg-teal-600 text-white'
+                    ? 'bg-blue-600 text-white'
                     : 'hover:bg-gray-700 hover:text-white'
                 }`}
               >
@@ -72,7 +72,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ activeView, setActiveView
           </button>
           <div className="relative">
             <button onClick={() => setProfileMenuOpen(!isProfileMenuOpen)} className="block">
-              <div className="h-10 w-10 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold ring-2 ring-gray-600 hover:ring-teal-500 transition-all">
+              <div className="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold ring-2 ring-gray-600 hover:ring-blue-500 transition-all">
                 {getInitials(userProfile.name)}
               </div>
             </button>
@@ -117,7 +117,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ activeView, setActiveView
             onClick={() => setActiveView(item.view as View)}
             className={`flex flex-col items-center justify-center w-full p-1 rounded-lg transition-colors duration-200 ${
               activeView === item.view
-                ? 'text-teal-400'
+                ? 'text-blue-400'
                 : 'text-gray-400 hover:text-white'
             }`}
             aria-label={item.label}
