@@ -1,110 +1,135 @@
 import React, { useState } from 'react';
+import UserIcon from './icons/UserIcon';
 import EnvelopeIcon from './icons/EnvelopeIcon';
 import LockIcon from './icons/LockIcon';
-import UserIcon from './icons/UserIcon';
-import EyeIcon from './icons/EyeIcon';
-import EyeOffIcon from './icons/EyeOffIcon';
 import HealthcareIllustration from './HealthcareIllustration';
 
 interface RegisterProps {
-    onRegister: () => void;
-    onSwitchToLogin: () => void;
+  onRegister: () => void;
+  onSwitchToLogin: () => void;
 }
 
 const Register: React.FC<RegisterProps> = ({ onRegister, onSwitchToLogin }) => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (name && email && password) {
-            onRegister();
-        }
-    };
+  const handleRegister = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (name && username && email && password) {
+      setError('');
+      onRegister();
+    } else {
+      setError('Please fill in all fields.');
+    }
+  };
 
-    return (
-        <div className="min-h-screen bg-[#5cacee] flex items-center justify-center p-4 relative overflow-hidden">
-            <HealthcareIllustration />
-            <div className="relative z-10 w-full max-w-md p-8 space-y-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl">
-                <div className="text-center">
-                    <h2 className="text-3xl font-bold text-gray-800">Create Your Account</h2>
-                    <p className="mt-2 text-sm text-gray-600">Get started with your personal health journey.</p>
-                </div>
-                
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="relative">
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                            <UserIcon className="h-5 w-5 text-gray-400" />
-                        </span>
-                        <input
-                            type="text"
-                            placeholder="Full Name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 bg-transparent border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 transition-colors"
-                            required
-                        />
-                    </div>
-                    <div className="relative">
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                            <EnvelopeIcon className="h-5 w-5 text-gray-400" />
-                        </span>
-                        <input
-                            type="email"
-                            placeholder="Email Address"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 bg-transparent border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 transition-colors"
-                            required
-                        />
-                    </div>
-                    <div className="relative">
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                            <LockIcon className="h-5 w-5 text-gray-400" />
-                        </span>
-                        <input
-                            type={showPassword ? 'text' : 'password'}
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full pl-10 pr-10 py-3 bg-transparent border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 transition-colors"
-                            required
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute inset-y-0 right-0 flex items-center pr-3"
-                            aria-label={showPassword ? 'Hide password' : 'Show password'}
-                        >
-                            {showPassword ? (
-                                <EyeOffIcon className="h-5 w-5 text-gray-500" />
-                            ) : (
-                                <EyeIcon className="h-5 w-5 text-gray-500" />
-                            )}
-                        </button>
-                    </div>
-                    
-                    <div>
-                        <button
-                            type="submit"
-                            className="w-full flex justify-center py-3 px-4 border border-transparent font-semibold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 shadow-md"
-                        >
-                            Sign Up
-                        </button>
-                    </div>
-                </form>
-                
-                <p className="text-center text-sm text-gray-600">
-                    Already have an account?{' '}
-                    <button onClick={onSwitchToLogin} className="font-medium text-blue-600 hover:text-blue-500 hover:underline">
-                        Sign In
-                    </button>
-                </p>
+  return (
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-4xl flex flex-col md:flex-row-reverse bg-white rounded-2xl shadow-2xl overflow-hidden">
+        {/* Left Side - Form */}
+        <div className="w-full md:w-1/2 p-8 sm:p-12 flex flex-col justify-center">
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl font-bold text-gray-800 pt-12 md:pt-0">Create Your Account</h1>
+            <p className="text-gray-500 mt-2">Get started with your personalized health journey.</p>
+          </div>
+
+          <form onSubmit={handleRegister} className="space-y-6">
+            <div className="relative">
+              <label htmlFor="name" className="sr-only">Full Name</label>
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                <UserIcon className="h-5 w-5 text-gray-400" />
+              </span>
+              <input
+                id="name"
+                type="text"
+                autoComplete="name"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition-shadow"
+                placeholder="Full Name"
+              />
             </div>
+
+            <div className="relative">
+              <label htmlFor="username" className="sr-only">Username</label>
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                <UserIcon className="h-5 w-5 text-gray-400" />
+              </span>
+              <input
+                id="username"
+                type="text"
+                autoComplete="username"
+                required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition-shadow"
+                placeholder="Username"
+              />
+            </div>
+
+            <div className="relative">
+              <label htmlFor="email" className="sr-only">Email</label>
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                <EnvelopeIcon className="h-5 w-5 text-gray-400" />
+              </span>
+              <input
+                id="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition-shadow"
+                placeholder="Email address"
+              />
+            </div>
+
+            <div className="relative">
+              <label htmlFor="password" className="sr-only">Password</label>
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                <LockIcon className="h-5 w-5 text-gray-400" />
+              </span>
+              <input
+                id="password"
+                type="password"
+                autoComplete="new-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition-shadow"
+                placeholder="Password"
+              />
+            </div>
+
+            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
+            <button
+              type="submit"
+              className="w-full py-3 px-4 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75 transition-transform transform hover:scale-105"
+            >
+              Create Account
+            </button>
+          </form>
+
+          <p className="mt-8 text-center text-sm text-gray-600">
+            Already have an account?{' '}
+            <button onClick={onSwitchToLogin} className="font-medium text-teal-600 hover:underline">
+              Sign in
+            </button>
+          </p>
         </div>
-    );
+
+        {/* Right Side - Illustration */}
+        <div className="hidden md:flex w-1/2 bg-teal-500 items-center justify-center p-8">
+            <HealthcareIllustration className="w-full h-auto max-w-sm" />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Register;

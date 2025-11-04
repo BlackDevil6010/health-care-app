@@ -1,91 +1,126 @@
-
 import React from 'react';
-import type { View } from '../types';
-import { appointments } from '../constants';
-import ChatIcon from './icons/ChatIcon';
-import CalendarIcon from './icons/CalendarIcon';
+import type { View, UserProfileData } from '../types';
+import { appointments, healthRecords } from '../constants';
+import ArrowRightIcon from './icons/ArrowRightIcon';
+import ClockIcon from './icons/ClockIcon';
+import HeartPulseIcon from './icons/HeartPulseIcon';
+import BeakerIcon from './icons/BeakerIcon';
+import DropletIcon from './icons/DropletIcon';
+import WalkingIcon from './icons/WalkingIcon';
 
 interface DashboardProps {
   setActiveView: (view: View) => void;
+  userProfile: UserProfileData;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ setActiveView }) => {
+const Dashboard: React.FC<DashboardProps> = ({ setActiveView, userProfile }) => {
   const upcomingAppointment = appointments.find(a => a.type === 'upcoming');
+  const recentRecord = healthRecords[0];
 
   return (
-    <div className="space-y-8 pb-16 md:pb-0">
-      {/* Welcome Banner */}
-      <div className="bg-blue-600 rounded-xl shadow-lg p-8 text-white flex justify-between items-center">
-        <div>
-          <h2 className="text-3xl font-bold">Good Morning, Alex</h2>
-          <p className="mt-2 text-blue-100">Let's check on your health today. How can we help?</p>
-        </div>
-        <img src="https://picsum.photos/seed/health/150/150" alt="Wellness" className="hidden sm:block rounded-full w-24 h-24 border-4 border-blue-500"/>
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold text-gray-800">Welcome back, {userProfile.name}!</h1>
+        <p className="text-md text-gray-500">Here's your health summary for today.</p>
       </div>
 
-      {/* Grid Layout */}
+      {/* Quick Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatCard icon={HeartPulseIcon} title="Heart Rate" value="72 bpm" trend="Normal" />
+        <StatCard icon={DropletIcon} title="Blood Sugar" value="95 mg/dL" trend="Stable" />
+        <StatCard icon={WalkingIcon} title="Steps Today" value="8,230" trend="Good" />
+        <StatCard icon={BeakerIcon} title="Last Lab Test" value="Normal" trend="July 15" />
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Main Column */}
-        <div className="lg:col-span-2 space-y-8">
-          {/* Quick Actions */}
-          <div className="bg-white p-6 rounded-xl shadow-md">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">Quick Actions</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <button
-                onClick={() => setActiveView('ai-assistant')}
-                className="group flex flex-col items-center justify-center p-6 bg-blue-50 hover:bg-blue-100 rounded-lg transition-all duration-300 text-center"
-              >
-                <div className="bg-blue-200 p-3 rounded-full mb-3">
-                    <ChatIcon className="w-6 h-6 text-blue-700" />
-                </div>
-                <p className="font-semibold text-blue-800">Check Symptoms</p>
-                <p className="text-sm text-blue-600">with our AI Assistant</p>
-              </button>
-              <button
-                onClick={() => setActiveView('appointments')}
-                className="group flex flex-col items-center justify-center p-6 bg-green-50 hover:bg-green-100 rounded-lg transition-all duration-300 text-center"
-              >
-                 <div className="bg-green-200 p-3 rounded-full mb-3">
-                    <CalendarIcon className="w-6 h-6 text-green-700" />
-                </div>
-                <p className="font-semibold text-green-800">Book Appointment</p>
-                <p className="text-sm text-green-600">Find a specialist</p>
-              </button>
-            </div>
+        {/* Upcoming Appointment */}
+        <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-lg">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold text-gray-800">Upcoming Appointment</h2>
+            <button onClick={() => setActiveView('appointments')} className="text-sm font-semibold text-teal-600 hover:underline flex items-center">
+              View All <ArrowRightIcon className="w-4 h-4 ml-1" />
+            </button>
           </div>
-        </div>
-
-        {/* Side Column */}
-        <div className="space-y-8">
-          {/* Upcoming Appointment */}
-          <div className="bg-white p-6 rounded-xl shadow-md">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">Upcoming Appointment</h3>
-            {upcomingAppointment ? (
-              <div className="flex items-start space-x-4">
-                <img src={upcomingAppointment.doctor.avatar} alt={upcomingAppointment.doctor.name} className="w-16 h-16 rounded-full"/>
-                <div>
-                    <p className="font-bold text-gray-800">{upcomingAppointment.doctor.name}</p>
-                    <p className="text-sm text-gray-500">{upcomingAppointment.doctor.specialty}</p>
-                    <p className="text-sm font-medium text-blue-600 mt-2">{new Date(upcomingAppointment.date).toDateString()} at {upcomingAppointment.time}</p>
-                </div>
+          {upcomingAppointment ? (
+            <div className="flex items-center space-x-4">
+              <img src={upcomingAppointment.doctor.avatar} alt={upcomingAppointment.doctor.name} className="w-16 h-16 rounded-full" />
+              <div className="flex-1">
+                <p className="font-bold text-lg text-gray-800">{upcomingAppointment.doctor.name}</p>
+                <p className="text-sm text-gray-500">{upcomingAppointment.doctor.specialty}</p>
               </div>
-            ) : (
-              <p className="text-gray-500">No upcoming appointments.</p>
-            )}
-          </div>
-          
-           {/* Health Tip */}
-          <div className="bg-white p-6 rounded-xl shadow-md">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">Health Tip of the Day</h3>
-             <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-r-lg">
-                <p className="font-bold">Stay Hydrated!</p>
-                <p className="text-sm">Drinking enough water daily is crucial for many reasons: to regulate body temperature, keep joints lubricated, prevent infections, deliver nutrients to cells, and keep organs functioning properly.</p>
+              <div className="text-right">
+                <p className="font-semibold text-teal-600">{new Date(upcomingAppointment.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}</p>
+                <p className="text-gray-600 flex items-center justify-end">
+                  <ClockIcon className="w-4 h-4 mr-1.5" />
+                  {upcomingAppointment.time}
+                </p>
+              </div>
             </div>
+          ) : (
+            <p className="text-gray-500 mt-4">No upcoming appointments. Time to relax!</p>
+          )}
+        </div>
+        
+        {/* Quick Actions */}
+        <div className="bg-white p-6 rounded-2xl shadow-lg">
+          <h2 className="text-xl font-bold text-gray-800 mb-4">Quick Actions</h2>
+          <div className="space-y-3">
+             <ActionButton onClick={() => setActiveView('ai-assistant')} text="Ask AI Assistant" />
+             <ActionButton onClick={() => setActiveView('appointments')} text="Book Appointment" />
+             <ActionButton onClick={() => setActiveView('health-records')} text="View Records" />
           </div>
         </div>
       </div>
+
+      {/* Recent Health Record */}
+      <div className="bg-white p-6 rounded-2xl shadow-lg">
+         <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold text-gray-800">Recent Health Record</h2>
+             <button onClick={() => setActiveView('health-records')} className="text-sm font-semibold text-teal-600 hover:underline flex items-center">
+              View All <ArrowRightIcon className="w-4 h-4 ml-1" />
+            </button>
+          </div>
+          {recentRecord ? (
+            <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-semibold text-gray-700">{recentRecord.type}</p>
+                  <p className="text-sm text-gray-500">{recentRecord.details}</p>
+                </div>
+                <div className="text-right">
+                  <p className={`px-3 py-1 text-xs font-semibold rounded-full ${recentRecord.status === 'Normal' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                    {recentRecord.status}
+                  </p>
+                  <p className="text-sm text-gray-500 mt-1">{new Date(recentRecord.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}</p>
+                </div>
+            </div>
+          ) : (
+             <p className="text-gray-500 mt-4">No recent records found.</p>
+          )}
+      </div>
+
     </div>
   );
 };
+
+const StatCard: React.FC<{ icon: React.FC<any>, title: string, value: string, trend: string }> = ({ icon: Icon, title, value, trend }) => (
+  <div className="bg-white p-5 rounded-2xl shadow-lg flex items-center space-x-4">
+    <div className="p-3 bg-teal-100 rounded-full">
+      <Icon className="w-6 h-6 text-teal-600" />
+    </div>
+    <div>
+      <p className="text-sm text-gray-500">{title}</p>
+      <p className="text-xl font-bold text-gray-800">{value}</p>
+      <p className="text-xs text-green-600">{trend}</p>
+    </div>
+  </div>
+);
+
+const ActionButton: React.FC<{ onClick: () => void, text: string }> = ({ onClick, text }) => (
+  <button onClick={onClick} className="w-full text-left bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold px-4 py-3 rounded-lg transition-colors flex justify-between items-center">
+    <span>{text}</span>
+    <ArrowRightIcon className="w-5 h-5" />
+  </button>
+);
+
 
 export default Dashboard;

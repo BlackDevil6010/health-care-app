@@ -1,24 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Healthcare Assistant</title>
     <script src="https://cdn.tailwindcss.com"></script>
-  <script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.552.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.28.0"
-  }
-}
-</script>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        /* For animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 20px, 0);
+            }
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes subtlePulse {
+            0%, 100% {
+                transform: scale(1);
+                text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+            }
+            50% {
+                transform: scale(1.02);
+                text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+            }
+        }
+        .animate-subtle-pulse {
+            animation: subtlePulse 4s ease-in-out infinite;
+        }
+
+        @keyframes backgroundPan {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animate-background-pan {
+            background-size: 200% 200%;
+            animation: backgroundPan 15s ease infinite;
+        }
+
+         @keyframes pulse {
+            50% {
+                opacity: .5;
+            }
+        }
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Custom animation for appointment form */
+        @keyframes fadeInDown {
+          from {
+            opacity: 0;
+            transform: translate3d(0, -20px, 0);
+          }
+          to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+          }
+        }
+        .animate-fade-in-down {
+          animation: fadeInDown 0.5s ease-out forwards;
+        }
+    </style>
 </head>
-  <body>
+<body>
     <div id="root"></div>
-  </body>
+
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "react/": "https://aistudiocdn.com/react@^19.2.0/",
+        "@google/genai": "https://aistudiocdn.com/@google/genai@^1.28.0",
+        "react-markdown": "https://aistudiocdn.com/react-markdown@^10.1.0",
+        "remark-gfm": "https://aistudiocdn.com/remark-gfm@^4.0.1"
+      }
+    }
+    </script>
+    <script type="module" src="/index.tsx"></script>
+</body>
 </html>

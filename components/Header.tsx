@@ -1,11 +1,16 @@
 
 import React from 'react';
+import type { UserProfileData } from '../types';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  userProfile: UserProfileData;
+}
+
+const Header: React.FC<HeaderProps> = ({ userProfile }) => {
   return (
     <header className="flex items-center justify-between h-20 px-6 bg-white shadow-sm flex-shrink-0">
       <div>
-        <h2 className="text-xl font-semibold text-gray-800">Welcome back, Alex!</h2>
+        <h2 className="text-xl font-semibold text-gray-800">Welcome back, {userProfile.name}!</h2>
         <p className="text-sm text-gray-500">Here's your health summary for today.</p>
       </div>
       <div className="flex items-center space-x-4">
@@ -17,7 +22,7 @@ const Header: React.FC = () => {
         </button>
         <img
           className="h-10 w-10 rounded-full object-cover"
-          src="https://picsum.photos/id/237/200/200"
+          src={userProfile.avatar}
           alt="User avatar"
         />
       </div>

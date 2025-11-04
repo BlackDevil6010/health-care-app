@@ -14,6 +14,7 @@ export const appointments: Appointment[] = [
     date: '2024-08-15',
     time: '10:30 AM',
     type: 'upcoming',
+    reason: 'Annual check-up and follow-up on recent blood work.',
   },
   {
     id: '2',
@@ -21,6 +22,7 @@ export const appointments: Appointment[] = [
     date: '2024-07-20',
     time: '02:00 PM',
     type: 'past',
+    reason: 'Follow-up regarding allergy symptoms.',
   },
    {
     id: '3',

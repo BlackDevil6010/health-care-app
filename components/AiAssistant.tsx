@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import type { Message } from '../types';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import type { Message, UserProfileData } from '../types';
 import { runChat } from '../services/geminiService';
 import MicrophoneIcon from './icons/MicrophoneIcon';
 
@@ -11,11 +13,21 @@ declare global {
     }
 }
 
-const AiAssistant: React.FC = () => {
+interface AiAssistantProps {
+  userProfile: UserProfileData;
+}
+
+const getInitials = (name: string) => {
+    const names = name.split(' ');
+    if (names.length === 1) return names[0][0]?.toUpperCase() || '';
+    return (names[0][0] + (names[names.length - 1][0] || '')).toUpperCase();
+}
+
+const AiAssistant: React.FC<AiAssistantProps> = ({ userProfile }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'initial',
-      text: "Hello! I'm Aura, your AI Health Assistant. How can I help you today? You can ask me about symptoms, health conditions, or general wellness.",
+      text: "Hello! I'm **Aura**, your AI Health Assistant. How can I help you today?\n\nYou can ask me about:\n* Symptoms\n* Health conditions\n* General wellness advice",
       sender: 'ai'
     }
   ]);
@@ -129,26 +141,45 @@ const AiAssistant: React.FC = () => {
         {messages.map((msg) => (
           <div key={msg.id} className={`flex items-end gap-3 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
             {msg.sender === 'ai' && (
-              <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold flex-shrink-0">A</div>
+              <div className="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center text-white font-bold flex-shrink-0">A</div>
             )}
-            <div className={`max-w-md md:max-w-lg p-4 rounded-2xl shadow-sm ${msg.sender === 'user' ? 'bg-blue-600 text-white rounded-br-none' : 'bg-gray-200 text-gray-800 rounded-bl-none'}`}>
-              <p className="text-sm whitespace-pre-wrap">{msg.text}</p>
+            <div className={`max-w-md md:max-w-lg p-4 rounded-2xl shadow-sm text-sm ${msg.sender === 'user' ? 'bg-teal-600 text-white rounded-br-none' : 'bg-gray-200 text-gray-800 rounded-bl-none'}`}>
+              {msg.sender === 'ai' ? (
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    p: ({ node, ...props }) => <p className="mb-2 last:mb-0" {...props} />,
+                    ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 my-2" {...props} />,
+                    ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1 my-2" {...props} />,
+                    pre: ({ node, ...props }) => <pre className="bg-gray-800 text-white text-sm p-3 rounded-md my-2 overflow-x-auto" {...props} />,
+                    code: ({ node, inline, ...props }) => (
+                      <code className={`font-mono ${inline ? 'bg-gray-300 text-gray-800 rounded px-1.5 py-1 text-xs' : 'text-white'}`} {...props} />
+                    ),
+                    strong: ({node, ...props}) => <strong className="font-bold" {...props} />,
+                  }}
+                >
+                  {msg.text}
+                </ReactMarkdown>
+              ) : (
+                 <p className="whitespace-pre-wrap">{msg.text}</p>
+              )}
             </div>
             {msg.sender === 'user' && (
-               <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center font-bold flex-shrink-0">
-                  <img src="https://picsum.photos/id/237/50/50" className="w-full h-full rounded-full object-cover"/>
+               <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-600 flex-shrink-0">
+                  {getInitials(userProfile.name)}
                </div>
             )}
           </div>
         ))}
          {isLoading && (
             <div className="flex items-end gap-3 justify-start">
-               <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold flex-shrink-0">A</div>
+               <div className="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center text-white font-bold flex-shrink-0">A</div>
                <div className="max-w-md md:max-w-lg p-4 rounded-2xl shadow-sm bg-gray-200 text-gray-800 rounded-bl-none">
-                  <div className="flex items-center space-x-2">
-                     <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                     <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                     <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+                  <div className="flex items-center space-x-2 text-sm text-gray-600">
+                     <span>Aura is typing</span>
+                     <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                     <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                     <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce"></div>
                   </div>
                </div>
             </div>
@@ -180,7 +211,7 @@ const AiAssistant: React.FC = () => {
           <button
             onClick={handleSend}
             disabled={isLoading || input.trim() === ''}
-            className="bg-blue-600 text-white p-2.5 rounded-full hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition-colors ml-1"
+            className="bg-teal-600 text-white p-2.5 rounded-full hover:bg-teal-700 disabled:bg-teal-300 disabled:cursor-not-allowed transition-colors ml-1"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />

@@ -1,5 +1,12 @@
+import type { View as OriginalView } from './types';
 
-export type View = 'dashboard' | 'ai-assistant' | 'appointments' | 'health-records';
+export type View = 'dashboard' | 'ai-assistant' | 'appointments' | 'health-records' | 'profile';
+
+export interface UserProfileData {
+  name: string;
+  email: string;
+  username: string;
+}
 
 export interface Message {
   id: string;
@@ -20,10 +27,11 @@ export interface Appointment {
   date: string;
   time: string;
   type: 'upcoming' | 'past';
+  reason?: string;
 }
 
 export interface HealthRecord {
-  id: string;
+  id:string;
   type: string;
   date: string;
   details: string;

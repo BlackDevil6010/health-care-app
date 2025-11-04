@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { healthRecords } from '../constants';
 
@@ -10,7 +9,7 @@ const statusColorMap = {
 
 const HealthRecords: React.FC = () => {
   return (
-    <div className="space-y-8 pb-16 md:pb-0">
+    <div className="space-y-8">
       <h1 className="text-3xl font-bold text-gray-800">Health Records</h1>
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
         <div className="overflow-x-auto">
