@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CloseIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+const CheckIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
@@ -13,9 +13,8 @@ const CloseIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    <line x1="18" y1="6" x2="6" y2="18" />
-    <line x1="6" y1="6" x2="18" y2="18" />
+    <polyline points="20 6 9 17 4 12" />
   </svg>
 );
 
-export default CloseIcon;
+export default CheckIcon;

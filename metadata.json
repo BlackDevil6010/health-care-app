@@ -2,6 +2,7 @@
   "name": "AI Healthcare Assistant",
   "description": "A modern, AI-powered healthcare application that allows users to check symptoms, book appointments, and get health-related information from a helpful AI assistant.",
   "requestFramePermissions": [
-    "microphone"
+    "microphone",
+    "camera"
   ]
 }

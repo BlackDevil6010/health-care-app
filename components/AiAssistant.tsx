@@ -1,59 +1,85 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import type { Message, UserProfileData } from '../types';
+import type { Message } from '../types';
 import { runChat } from '../services/geminiService';
+import ChatIcon from './icons/ChatIcon';
+import UserIcon from './icons/UserIcon';
 import MicrophoneIcon from './icons/MicrophoneIcon';
+import ShareIcon from './icons/ShareIcon';
+import CheckIcon from './icons/CheckIcon';
 
-// Declare SpeechRecognition types for window object
-declare global {
-    interface Window {
-        SpeechRecognition: any;
-        webkitSpeechRecognition: any;
+const AIMessageBody: React.FC<{ text: string }> = ({ text }) => {
+    let html = '';
+    const lines = text.split('\n');
+    let inList = false;
+
+    const processLine = (line: string): string => {
+        // Simple inline markdown for bold text
+        return line.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>');
     }
+
+    lines.forEach(line => {
+        // Handle list logic
+        if (line.trim().startsWith('* ')) {
+            if (!inList) {
+                html += '<ul class="list-disc list-inside space-y-1 my-2 pl-4">';
+                inList = true;
+            }
+            html += `<li>${processLine(line.trim().substring(2))}</li>`;
+        } else {
+            if (inList) {
+                html += '</ul>';
+                inList = false;
+            }
+
+            // Headings
+            if (line.startsWith('### ')) {
+                html += `<h3 class="text-md font-bold text-gray-800 mt-4 mb-2">${processLine(line.substring(4))}</h3>`;
+            }
+            // HR
+            else if (line.trim() === '---') {
+                html += '<hr class="my-3 border-gray-200" />';
+            }
+            // Blockquote
+            else if (line.startsWith('> ')) {
+                html += `<blockquote class="border-l-4 border-gray-300 pl-3 my-2 text-sm text-gray-500 italic">${processLine(line.substring(2))}</blockquote>`;
+            }
+            // Paragraph
+            else if (line.trim() !== '') {
+                html += `<p class="my-1">${processLine(line)}</p>`;
+            }
+        }
+    });
+
+    if (inList) {
+        html += '</ul>';
+    }
+
+    return <div className="text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
-interface AiAssistantProps {
-  userProfile: UserProfileData;
-}
-
-const getInitials = (name: string) => {
-    const names = name.split(' ');
-    if (names.length === 1) return names[0][0]?.toUpperCase() || '';
-    return (names[0][0] + (names[names.length - 1][0] || '')).toUpperCase();
-}
-
-const AiAssistant: React.FC<AiAssistantProps> = ({ userProfile }) => {
+const AiAssistant: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'initial',
-      text: "Hello! I'm **Aura**, your AI Health Assistant. How can I help you today?\n\nYou can ask me about:\n* Symptoms\n* Health conditions\n* General wellness advice",
-      sender: 'ai'
-    }
+      text: "Hello! I'm Aura, your AI health assistant. How are you feeling today? Please describe your symptoms.",
+      sender: 'ai',
+    },
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isListening, setIsListening] = useState(false);
-  // Fix: Changed SpeechRecognition to 'any' to resolve the type error.
-  const recognitionRef = useRef<any | null>(null);
+  const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
-  useEffect(() => {
-    // Cleanup on unmount
-    return () => {
-      recognitionRef.current?.abort();
-    };
-  }, []);
-
-  const handleSend = async () => {
+  const handleSend = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (input.trim() === '' || isLoading) return;
 
     const userMessage: Message = {
@@ -62,161 +88,117 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ userProfile }) => {
       sender: 'user',
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
 
-    try {
-      const aiResponse = await runChat(input);
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: aiResponse,
-        sender: 'ai',
-      };
-      setMessages((prev) => [...prev, aiMessage]);
-    } catch (error) {
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: 'Sorry, I encountered an error. Please try again.',
-        sender: 'ai',
-      };
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    const aiResponseText = await runChat(input);
+    
+    const aiMessage: Message = {
+      id: (Date.now() + 1).toString(),
+      text: aiResponseText,
+      sender: 'ai',
+    };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      handleSend();
-    }
+    setMessages(prev => [...prev, aiMessage]);
+    setIsLoading(false);
   };
   
-  const handleToggleListening = () => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      alert("Your browser does not support Speech Recognition. Please try using Chrome or Edge.");
-      return;
-    }
-
-    if (isListening) {
-      recognitionRef.current?.stop();
-      return;
-    }
-    
-    const recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.lang = 'en-US';
-
-    recognition.onstart = () => {
-      setIsListening(true);
-    };
-
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      setInput(prev => prev ? `${prev} ${transcript}` : transcript);
-    };
-    
-    recognition.onerror = (event) => {
-      console.error("Speech recognition error:", event.error);
-      setIsListening(false);
-    };
-
-    recognition.onend = () => {
-      setIsListening(false);
-    };
-
-    recognition.start();
-    recognitionRef.current = recognition;
+  const handleCopy = (text: string, id: string) => {
+      navigator.clipboard.writeText(text).then(() => {
+          setCopiedMessageId(id);
+          setTimeout(() => setCopiedMessageId(null), 2000);
+      });
   };
 
-
   return (
-    <div className="flex flex-col h-full max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
-      <div className="p-4 border-b">
-        <h2 className="text-xl font-bold text-gray-800">AI Health Assistant</h2>
-      </div>
-      <div className="flex-1 p-6 overflow-y-auto space-y-6">
-        {messages.map((msg) => (
-          <div key={msg.id} className={`flex items-end gap-3 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-            {msg.sender === 'ai' && (
-              <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold flex-shrink-0">A</div>
-            )}
-            <div className={`max-w-md md:max-w-lg p-4 rounded-2xl shadow-sm text-sm ${msg.sender === 'user' ? 'bg-blue-600 text-white rounded-br-none' : 'bg-gray-200 text-gray-800 rounded-bl-none'}`}>
-              {msg.sender === 'ai' ? (
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    p: ({ node, ...props }) => <p className="mb-2 last:mb-0" {...props} />,
-                    ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 my-2" {...props} />,
-                    ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1 my-2" {...props} />,
-                    pre: ({ node, ...props }) => <pre className="bg-gray-800 text-white text-sm p-3 rounded-md my-2 overflow-x-auto" {...props} />,
-                    code: ({ node, inline, ...props }) => (
-                      <code className={`font-mono ${inline ? 'bg-gray-300 text-gray-800 rounded px-1.5 py-1 text-xs' : 'text-white'}`} {...props} />
-                    ),
-                    strong: ({node, ...props}) => <strong className="font-bold" {...props} />,
-                  }}
-                >
-                  {msg.text}
-                </ReactMarkdown>
-              ) : (
-                 <p className="whitespace-pre-wrap">{msg.text}</p>
+    <div className="h-full flex flex-col max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold text-gray-800 mb-6">AI Health Assistant</h1>
+      <div className="flex-1 bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col">
+        <div className="flex-1 p-6 space-y-6 overflow-y-auto">
+          {messages.map((message) => (
+            <div key={message.id} className={`flex items-start gap-4 ${message.sender === 'user' ? 'justify-end' : ''}`}>
+              {message.sender === 'ai' && (
+                <>
+                    <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center flex-shrink-0">
+                      <ChatIcon className="w-6 h-6" />
+                    </div>
+                    <div className="flex flex-col items-start">
+                        <div className="max-w-md p-4 rounded-2xl bg-gray-100 text-gray-800 rounded-tl-none">
+                            <AIMessageBody text={message.text} />
+                        </div>
+                        <button
+                            onClick={() => handleCopy(message.text, message.id)}
+                            className="mt-2 flex items-center text-xs text-gray-500 hover:text-blue-600 transition"
+                        >
+                            {copiedMessageId === message.id ? (
+                                <>
+                                    <CheckIcon className="w-4 h-4 mr-1 text-green-500"/>
+                                    <span>Copied!</span>
+                                </>
+                            ) : (
+                                <>
+                                    <ShareIcon className="w-4 h-4 mr-1"/>
+                                    <span>Share</span>
+                                </>
+                            )}
+                        </button>
+                    </div>
+                </>
+              )}
+              {message.sender === 'user' && (
+                <>
+                    <div className="max-w-md p-4 rounded-2xl bg-blue-600 text-white rounded-br-none">
+                      <p className="text-sm" style={{ whiteSpace: 'pre-wrap' }}>{message.text}</p>
+                    </div>
+                    <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
+                      <UserIcon className="w-6 h-6 text-gray-600" />
+                    </div>
+                </>
               )}
             </div>
-            {msg.sender === 'user' && (
-               <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-600 flex-shrink-0">
-                  {getInitials(userProfile.name)}
-               </div>
-            )}
-          </div>
-        ))}
-         {isLoading && (
-            <div className="flex items-end gap-3 justify-start">
-               <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold flex-shrink-0">A</div>
-               <div className="max-w-md md:max-w-lg p-4 rounded-2xl shadow-sm bg-gray-200 text-gray-800 rounded-bl-none">
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                     <span>Aura is typing</span>
-                     <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                     <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                     <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce"></div>
+          ))}
+          {isLoading && (
+            <div className="flex items-start gap-4">
+               <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center flex-shrink-0">
+                  <ChatIcon className="w-6 h-6" />
+                </div>
+               <div className="max-w-md p-4 rounded-2xl bg-gray-100 text-gray-800 rounded-tl-none">
+                  <div className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+                      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
                   </div>
-               </div>
+              </div>
             </div>
-         )}
-        <div ref={messagesEndRef} />
-      </div>
-      <div className="p-4 border-t bg-gray-50">
-        <div className="flex items-center bg-white border rounded-full shadow-sm px-2">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder={isListening ? 'Listening...' : "Type your message here..."}
-            className="flex-1 p-3 bg-transparent focus:outline-none text-sm text-gray-700"
-            disabled={isLoading}
-          />
-           <button
-            onClick={handleToggleListening}
-            disabled={isLoading}
-            className={`p-2.5 rounded-full transition-colors disabled:opacity-50 ${
-              isListening
-                ? 'text-white bg-red-500 hover:bg-red-600 animate-pulse'
-                : 'text-gray-500 hover:bg-gray-100'
-            }`}
-          >
-            <MicrophoneIcon className="h-5 w-5" />
-          </button>
-          <button
-            onClick={handleSend}
-            disabled={isLoading || input.trim() === ''}
-            className="bg-blue-600 text-white p-2.5 rounded-full hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition-colors ml-1"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-            </svg>
-          </button>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+        <div className="p-4 bg-gray-50 border-t border-gray-200">
+          <form onSubmit={handleSend} className="flex items-center space-x-4">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Describe your symptoms..."
+              disabled={isLoading}
+              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+            />
+            <button
+                type="button"
+                className="p-3 text-gray-500 hover:text-blue-600 hover:bg-gray-100 rounded-full transition"
+                aria-label="Use microphone"
+                >
+                <MicrophoneIcon className="w-6 h-6" />
+            </button>
+            <button
+              type="submit"
+              disabled={isLoading || input.trim() === ''}
+              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition"
+            >
+              Send
+            </button>
+          </form>
         </div>
       </div>
     </div>

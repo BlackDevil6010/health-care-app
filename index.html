@@ -1,94 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Healthcare Assistant</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: 'Times New Roman', Times, serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Healthcare Assistant</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
 
-        /* For animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translate3d(0, 20px, 0);
-            }
-            to {
-                opacity: 1;
-                transform: translate3d(0, 0, 0);
-            }
-        }
-        .animate-fade-in-up {
-            animation: fadeInUp 0.6s ease-out forwards;
-        }
+  <style>
+    /* Custom Font & Animations */
+    body {
+      font-family: 'Times New Roman', Times, serif;
+    }
 
-        @keyframes subtlePulse {
-            0%, 100% {
-                transform: scale(1);
-                text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
-            }
-            50% {
-                transform: scale(1.02);
-                text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
-            }
-        }
-        .animate-subtle-pulse {
-            animation: subtlePulse 4s ease-in-out infinite;
-        }
-
-        @keyframes backgroundPan {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .animate-background-pan {
-            background-size: 200% 200%;
-            animation: backgroundPan 15s ease infinite;
-        }
-
-         @keyframes pulse {
-            50% {
-                opacity: .5;
-            }
-        }
-        .animate-pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        /* Custom animation for appointment form */
-        @keyframes fadeInDown {
-          from {
-            opacity: 0;
-            transform: translate3d(0, -20px, 0);
-          }
-          to {
-            opacity: 1;
-            transform: translate3d(0, 0, 0);
-          }
-        }
-        .animate-fade-in-down {
-          animation: fadeInDown 0.5s ease-out forwards;
-        }
-    </style>
-</head>
-<body>
-    <div id="root"></div>
-
-    <script type="importmap">
-    {
-      "imports": {
-        "react": "https://aistudiocdn.com/react@^19.2.0",
-        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-        "react/": "https://aistudiocdn.com/react@^19.2.0/",
-        "@google/genai": "https://aistudiocdn.com/@google/genai@^1.28.0",
-        "react-markdown": "https://aistudiocdn.com/react-markdown@^10.1.0",
-        "remark-gfm": "https://aistudiocdn.com/remark-gfm@^4.0.1"
+    @keyframes fade-in-up {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
     }
-    </script>
-    <script type="module" src="/index.tsx"></script>
+    .animate-fade-in-up {
+      animation: fade-in-up 0.5s ease-out forwards;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0px); }
+    }
+    .animate-float {
+        animation: float 4s ease-in-out infinite;
+    }
+    
+    @keyframes pulse-glow {
+      0%, 100% {
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.4), 0 0 15px rgba(59, 130, 246, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.6), 0 0 30px rgba(59, 130, 246, 0.5);
+      }
+    }
+    .animate-pulse-glow {
+        animation: pulse-glow 2.5s infinite;
+    }
+
+    @keyframes progress-indeterminate {
+      0% { transform: translateX(-100%) scaleX(0.5); }
+      50% { transform: translateX(0) scaleX(0.2); }
+      100% { transform: translateX(100%) scaleX(0.5); }
+    }
+    
+    @keyframes pop-in {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    .animate-pop-in {
+        animation: pop-in 0.3s ease-out forwards;
+    }
+    
+    @keyframes subtle-pulse {
+        0%, 100% { opacity: 0.9; }
+        50% { opacity: 1; }
+    }
+    .animate-subtle-pulse {
+        animation: subtle-pulse 3s infinite ease-in-out;
+    }
+
+  </style>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "react": "https://aistudiocdn.com/react@^19.2.0",
+      "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+      "react/": "https://aistudiocdn.com/react@^19.2.0/",
+      "@google/genai": "https://aistudiocdn.com/@google/genai@^1.28.0"
+    }
+  }
+  </script>
+</head>
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
 </body>
 </html>

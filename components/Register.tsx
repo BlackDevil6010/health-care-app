@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import UserIcon from './icons/UserIcon';
 import EnvelopeIcon from './icons/EnvelopeIcon';
 import LockIcon from './icons/LockIcon';
-import HealthcareIllustration from './HealthcareIllustration';
 
 interface RegisterProps {
   onRegister: () => void;
@@ -11,14 +10,13 @@ interface RegisterProps {
 
 const Register: React.FC<RegisterProps> = ({ onRegister, onSwitchToLogin }) => {
   const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
-    if (name && username && email && password) {
+    if (name && email && password) {
       setError('');
       onRegister();
     } else {
@@ -27,20 +25,17 @@ const Register: React.FC<RegisterProps> = ({ onRegister, onSwitchToLogin }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl flex flex-col md:flex-row-reverse bg-white rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up">
-        {/* Left Side - Form */}
-        <div className="w-full md:w-1/2 p-8 sm:p-12 flex flex-col justify-center">
-          <div className="mb-8 text-center">
-            <h1 className="text-3xl font-bold text-gray-800">Create Your Account</h1>
-            <p className="text-gray-500 mt-2">Get started with your personalized health journey.</p>
-          </div>
-
-          <form onSubmit={handleRegister} className="space-y-6">
+    <div className="min-h-screen bg-blue-100 flex items-center justify-center p-4 animate-fade-in-up">
+      <div className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+        
+        {/* Form Panel */}
+        <div className="w-full md:w-7/12 p-8 sm:p-12 flex flex-col justify-center order-2 md:order-1">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4 text-center">Registration</h1>
+          
+          <form onSubmit={handleRegister} className="space-y-5 mt-6">
             <div className="relative">
-              <label htmlFor="name" className="sr-only">Full Name</label>
               <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                <UserIcon className="h-5 w-5 text-gray-400" />
+                  <UserIcon className="h-5 w-5 text-gray-400" />
               </span>
               <input
                 id="name"
@@ -49,84 +44,66 @@ const Register: React.FC<RegisterProps> = ({ onRegister, onSwitchToLogin }) => {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-shadow"
-                placeholder="Full Name"
-              />
-            </div>
-
-            <div className="relative">
-              <label htmlFor="username" className="sr-only">Username</label>
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                <UserIcon className="h-5 w-5 text-gray-400" />
-              </span>
-              <input
-                id="username"
-                type="text"
-                autoComplete="username"
-                required
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                className="w-full pl-10 pr-4 py-3 bg-gray-100 border border-transparent rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition"
                 placeholder="Username"
               />
             </div>
 
             <div className="relative">
-              <label htmlFor="email" className="sr-only">Email</label>
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                <EnvelopeIcon className="h-5 w-5 text-gray-400" />
-              </span>
-              <input
-                id="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-shadow"
-                placeholder="Email address"
-              />
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <EnvelopeIcon className="h-5 w-5 text-gray-400" />
+                </span>
+                <input
+                  id="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-gray-100 border border-transparent rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition"
+                  placeholder="Email"
+                />
             </div>
 
             <div className="relative">
-              <label htmlFor="password" className="sr-only">Password</label>
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                <LockIcon className="h-5 w-5 text-gray-400" />
-              </span>
-              <input
-                id="password"
-                type="password"
-                autoComplete="new-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-shadow"
-                placeholder="Password"
-              />
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <LockIcon className="h-5 w-5 text-gray-400" />
+                </span>
+                <input
+                  id="password"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-gray-100 border border-transparent rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition"
+                  placeholder="Password"
+                />
             </div>
 
             {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
             <button
               type="submit"
-              className="w-full py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-lg shadow-md hover:from-cyan-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition-transform transform hover:scale-105"
+              className="w-full py-3 px-4 bg-blue-600 text-white font-bold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition transform hover:-translate-y-0.5"
             >
-              Create Account
+              Register
             </button>
           </form>
-
-          <p className="mt-8 text-center text-sm text-gray-600">
-            Already have an account?{' '}
-            <button onClick={onSwitchToLogin} className="font-medium text-blue-600 hover:underline">
-              Sign in
-            </button>
-          </p>
         </div>
 
-        {/* Right Side - Illustration */}
-        <div className="hidden md:flex w-1/2 bg-gradient-to-br from-cyan-500 to-blue-600 items-center justify-center p-8">
-            <HealthcareIllustration className="w-full h-auto max-w-sm" />
+        {/* Decorative Panel */}
+        <div className="w-full md:w-5/12 bg-blue-600 text-white p-12 flex flex-col justify-center items-center text-center order-1 md:order-2 animate-float">
+          <h2 className="text-3xl font-bold mb-3">Welcome Back!</h2>
+          <p className="mb-6 text-blue-200">Already have an account?</p>
+          <button
+            onClick={onSwitchToLogin}
+            className="border-2 border-white rounded-full px-12 py-2 font-semibold hover:bg-white hover:text-blue-600 transition-colors duration-300"
+          >
+            Login
+          </button>
         </div>
+        
       </div>
     </div>
   );

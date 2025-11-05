@@ -1,11 +1,11 @@
-import type { View as OriginalView } from './types';
 
-export type View = 'dashboard' | 'ai-assistant' | 'appointments' | 'health-records' | 'profile';
+export type View = 'dashboard' | 'ai-assistant' | 'appointments' | 'health-records' | 'profile' | 'video-studio';
 
 export interface UserProfileData {
   name: string;
   email: string;
   username: string;
+  avatar?: string;
 }
 
 export interface Message {

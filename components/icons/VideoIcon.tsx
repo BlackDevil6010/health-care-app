@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CloseIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+const VideoIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
@@ -13,9 +13,9 @@ const CloseIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    <line x1="18" y1="6" x2="6" y2="18" />
-    <line x1="6" y1="6" x2="18" y2="18" />
+    <path d="m22 8-6 4 6 4V8Z" />
+    <rect width="14" height="12" x="2" y="6" rx="2" ry="2" />
   </svg>
 );
 
-export default CloseIcon;
+export default VideoIcon;
